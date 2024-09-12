@@ -78,4 +78,13 @@
 		</plugins>
 	</build>
 
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>monolith</module>
+		<module>domain</module>
+		<module>app</module>
+		<module>adapters</module>
+	</modules>
+
 </project>
