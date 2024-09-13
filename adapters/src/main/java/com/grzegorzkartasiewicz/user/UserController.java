@@ -3,7 +3,6 @@ package com.grzegorzkartasiewicz.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +15,9 @@ class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     public static final String MODEL_ATTRIBUTE_USER = "user";
     private final UserRepository repository;
-    private final UserService service;
+    private final UserFacade service;
 
-    UserController(UserRepository repository, UserService service) {
+    UserController(UserRepository repository, UserFacade service) {
         this.repository = repository;
         this.service = service;
     }

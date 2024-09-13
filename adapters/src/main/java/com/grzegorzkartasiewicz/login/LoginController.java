@@ -27,9 +27,9 @@ class LoginController implements ErrorController {
     public static final String MODEL_ATTRIBUTE_LOGIN = "login";
     public static final String SESSION_ATTRIBUTE_USER = "user";
     private final LoginRepository repository;
-    private final LoginService service;
+    private final LoginFacade service;
 
-    LoginController(LoginRepository repository, LoginService service) {
+    LoginController(LoginRepository repository, LoginFacade service) {
         this.repository = repository;
         this.service = service;
     }

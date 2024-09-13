@@ -1,25 +1,22 @@
 package com.grzegorzkartasiewicz.post;
 
 import com.grzegorzkartasiewicz.comment.Comment;
-import com.grzegorzkartasiewicz.comment.CommentService;
+import com.grzegorzkartasiewicz.comment.CommentFacade;
 import com.grzegorzkartasiewicz.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 
-@Service
-public class PostService {
-    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
+public class PostFacade {
+    private static final Logger logger = LoggerFactory.getLogger(PostFacade.class);
     private final PostRepository repository;
-    private final CommentService commentService;
+    private final CommentFacade commentFacade;
 
-    public PostService(PostRepository repository, CommentService commentService) {
+    public PostFacade(PostRepository repository, CommentFacade commentFacade) {
         this.repository = repository;
-        this.commentService = commentService;
+        this.commentFacade = commentFacade;
     }
 
     public Post createPost(Post source){
@@ -32,7 +29,7 @@ public class PostService {
             targetComment.setDescription(description);
             targetComment.setPost(post);
             targetComment.setUser(user);
-            return commentService.createComment(targetComment);
+            return commentFacade.createComment(targetComment);
         }).orElseThrow(() ->new IllegalArgumentException("Post with given id was not found!"));
     }
 
@@ -42,12 +39,12 @@ public class PostService {
     }
 
     public void deleteComment(int commentId){
-        commentService.deleteComment(commentId);
+        commentFacade.deleteComment(commentId);
     }
 
     public void deletePost(int postId) {
         repository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post with given id not found"))
-                .getComments().forEach(comment -> commentService.deleteComment(comment.getId()));
+                .getComments().forEach(comment -> commentFacade.deleteComment(comment.getId()));
         repository.deleteById(postId);
     }
 }

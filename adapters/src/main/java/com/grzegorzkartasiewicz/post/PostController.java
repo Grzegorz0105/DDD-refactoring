@@ -2,17 +2,14 @@ package com.grzegorzkartasiewicz.post;
 
 import com.grzegorzkartasiewicz.user.User;
 import com.grzegorzkartasiewicz.user.UserRepository;
-import com.grzegorzkartasiewicz.user.UserService;
+import com.grzegorzkartasiewicz.user.UserFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,14 +20,14 @@ class PostController {
     public static final String MODEL_ATTRIBUTE_POST = "post";
     private final PostRepository repository;
     private final UserRepository userRepository;
-    private final PostService service;
-    private final UserService userService;
+    private final PostFacade service;
+    private final UserFacade userFacade;
 
-    PostController(PostRepository repository, UserRepository userRepository, PostService service, UserService userService) {
+    PostController(PostRepository repository, UserRepository userRepository, PostFacade service, UserFacade userFacade) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.service = service;
-        this.userService = userService;
+        this.userFacade = userFacade;
     }
 
     @GetMapping("/home")
@@ -55,7 +52,7 @@ class PostController {
                        @PathVariable int id,
                        String description){
         logger.info("Creating new post!");
-        userService.createPost(id,description);
+        userFacade.createPost(id,description);
         model.addAttribute(MODEL_ATTRIBUTE_POSTS, getPosts());
         return MODEL_ATTRIBUTE_POSTS;
     }
@@ -75,7 +72,7 @@ class PostController {
     String searchUsersAndPosts(Model model, @RequestParam String search){
         logger.info("Showing searched users and posts!");
         model.addAttribute(MODEL_ATTRIBUTE_POSTS, service.searchPosts(search));
-        model.addAttribute("users",userService.searchUsers(search));
+        model.addAttribute("users", userFacade.searchUsers(search));
         return MODEL_ATTRIBUTE_POSTS;
     }
     @PostMapping("/comment/delete/{commentId}")

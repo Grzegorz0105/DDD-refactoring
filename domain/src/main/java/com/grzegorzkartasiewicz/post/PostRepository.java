@@ -4,7 +4,7 @@ package com.grzegorzkartasiewicz.post;
 import java.util.List;
 import java.util.Optional;
 
-public interface PostRepository {
+interface PostRepository {
     List<Post> findAll();
 
     Optional<Post> findById(Integer id);

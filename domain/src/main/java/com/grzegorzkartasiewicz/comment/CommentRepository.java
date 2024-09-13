@@ -5,7 +5,7 @@ package com.grzegorzkartasiewicz.comment;
 import java.util.List;
 import java.util.Optional;
 
-public interface CommentRepository {
+interface CommentRepository {
     List<Comment> findAll();
 
     Optional<Comment> findById(Integer id);

@@ -87,4 +87,14 @@ public class UserDTO {
         userDTO.setLogin(user.getLogin());
         return userDTO;
     }
+
+    public User toEntity() {
+        User user = new User();
+        user.setId(this.getId());
+        user.setAge(this.getAge());
+        user.setName(this.getName());
+        user.setSurname(this.getSurname());
+        user.setLogin(this.getLogin());
+        return user;
+    }
 }

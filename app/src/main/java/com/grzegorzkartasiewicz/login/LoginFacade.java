@@ -1,25 +1,24 @@
 package com.grzegorzkartasiewicz.login;
 
 import com.grzegorzkartasiewicz.user.User;
-import com.grzegorzkartasiewicz.user.UserRepository;
+import com.grzegorzkartasiewicz.user.UserDTO;
+import com.grzegorzkartasiewicz.user.UserFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 
-@Service
-class LoginService {
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+public class LoginFacade {
+    private static final Logger logger = LoggerFactory.getLogger(LoginFacade.class);
     private final LoginRepository repository;
-    private final UserRepository userRepository;
+    private final UserFacade userFacade;
 
-    LoginService(LoginRepository repository, UserRepository userRepository) {
+    LoginFacade(LoginRepository repository, UserFacade userFacade) {
         this.repository = repository;
-        this.userRepository = userRepository;
+        this.userFacade = userFacade;
     }
 
     User signInUser(User user){
-        return userRepository.save(user);
+        return userFacade.createUser(user);
     }
 
     User logInUser(String login,String password){

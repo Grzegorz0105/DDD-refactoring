@@ -1,12 +1,9 @@
 package com.grzegorzkartasiewicz.comment;
 
-import org.springframework.stereotype.Service;
-
-@Service
-public class CommentService {
+public class CommentFacade {
     private final CommentRepository repository;
 
-    public CommentService(CommentRepository repository) {
+    public CommentFacade(CommentRepository repository) {
         this.repository = repository;
     }
 

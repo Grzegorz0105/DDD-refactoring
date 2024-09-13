@@ -2,22 +2,20 @@ package com.grzegorzkartasiewicz.user;
 
 import com.grzegorzkartasiewicz.comment.Comment;
 import com.grzegorzkartasiewicz.post.Post;
-import com.grzegorzkartasiewicz.post.PostService;
+import com.grzegorzkartasiewicz.post.PostFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-
-@Service
-public class UserService {
-    public static final Logger logger = LoggerFactory.getLogger(UserService.class);
+public class UserFacade {
+    public static final Logger logger = LoggerFactory.getLogger(UserFacade.class);
     private UserRepository repository;
-    private PostService postService;
+    private PostFacade postFacade;
 
-    public UserService(UserRepository repository, PostService postService) {
+    public UserFacade(UserRepository repository, PostFacade postFacade) {
         this.repository = repository;
-        this.postService = postService;
+        this.postFacade = postFacade;
     }
 
     public Post createPost(int id, String description){
@@ -26,20 +24,24 @@ public class UserService {
             var targetPost = new Post();
             targetPost.setDescription(description);
             targetPost.setUser(user);
-            return postService.createPost(targetPost);
+            return postFacade.createPost(targetPost);
         }).orElseThrow(() ->new IllegalArgumentException("User with given id was not found!"));
     }
     Comment createComment(User user, int postId, String description){
-        return postService.createComment(user, postId, description);
+        return postFacade.createComment(user, postId, description);
     }
     void deletePost(int postId){
-        postService.deletePost(postId);
+        postFacade.deletePost(postId);
     }
     void deleteComment(int commentId){
-        postService.deleteComment(commentId);
+        postFacade.deleteComment(commentId);
     }
 
     public List<User> searchUsers(String search) {
         return repository.findAll().stream().filter(user -> user.getName().toLowerCase().contains(search.toLowerCase()) || user.getSurname().toLowerCase().contains(search.toLowerCase())).toList();
+    }
+
+    public User createUser(User user) {
+        return repository.save(user);
     }
 }
