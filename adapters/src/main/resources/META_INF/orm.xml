@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+                                     http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <entity class="com.grzegorzkartasiewicz.comment.Comment" access="FIELD">
+        <table name="comments"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="time">
+                <column name="time"/>
+            </basic>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <many-to-one name="post">
+                <join-column name="post_id"/>
+            </many-to-one>
+            <many-to-one name="user">
+                <join-column name="user_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="com.grzegorzkartasiewicz.login.Login">
+        <table name="logins"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="nick">
+                <column name="nick"/>
+            </basic>
+            <basic name="password">
+                <column name="password"/>
+            </basic>
+            <basic name="email">
+                <column name="email"/>
+            </basic>
+            <one-to-one name="user" mapped-by="login">
+            </one-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="com.grzegorzkartasiewicz.post.Post">
+        <table name="posts"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="time">
+                <column name="time"/>
+            </basic>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <many-to-one name="user">
+                <join-column name="user_id"/>
+            </many-to-one>
+            <one-to-many name="comments" mapped-by="post">
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="com.grzegorzkartasiewicz.user.User">
+        <table name="users"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <basic name="surname">
+                <column name="surname"/>
+            </basic>
+            <basic name="age">
+                <column name="age"/>
+            </basic>
+            <one-to-many name="posts" mapped-by="user">
+            </one-to-many>
+            <one-to-many name="comments" mapped-by="user">
+            </one-to-many>
+            <one-to-one name="login">
+                <join-column name="login_id" referenced-column-name="id"/>
+            </one-to-one>
+        </attributes>
+    </entity>
+
+</entity-mappings>

@@ -1,7 +1,7 @@
 package com.grzegorzkartasiewicz.post;
 
+import com.grzegorzkartasiewicz.comment.CommentId;
 import com.grzegorzkartasiewicz.user.User;
-import com.grzegorzkartasiewicz.user.UserRepository;
 import com.grzegorzkartasiewicz.user.UserFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +19,11 @@ class PostController {
     public static final String MODEL_ATTRIBUTE_POSTS = "posts";
     public static final String MODEL_ATTRIBUTE_POST = "post";
     private final PostRepository repository;
-    private final UserRepository userRepository;
     private final PostFacade service;
     private final UserFacade userFacade;
 
-    PostController(PostRepository repository, UserRepository userRepository, PostFacade service, UserFacade userFacade) {
+    PostController(PostRepository repository, PostFacade service, UserFacade userFacade) {
         this.repository = repository;
-        this.userRepository = userRepository;
         this.service = service;
         this.userFacade = userFacade;
     }
@@ -80,7 +78,7 @@ class PostController {
                          Model model,
                          @PathVariable int commentId){
         logger.info("Deleting comment!");
-        service.deleteComment(commentId);
+        service.deleteComment(new CommentId(commentId));
         model.addAttribute(MODEL_ATTRIBUTE_POSTS, getPosts());
         return MODEL_ATTRIBUTE_POSTS;
     }

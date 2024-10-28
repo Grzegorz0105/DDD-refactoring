@@ -1,18 +1,13 @@
 package com.grzegorzkartasiewicz.login;
 
-import com.grzegorzkartasiewicz.user.User;
-
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
+import com.grzegorzkartasiewicz.user.UserId;
 
 public class LoginDTO {
     private int id;
     private String nick;
     private String password;
     private String email;
-    private User user;
+    private UserId user;
 
     public int getId() {
         return id;
@@ -46,11 +41,11 @@ public class LoginDTO {
         this.email = email;
     }
 
-    public User getUser() {
+    public UserId getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserId user) {
         this.user = user;
     }
 

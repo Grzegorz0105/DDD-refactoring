@@ -1,10 +1,12 @@
 package com.grzegorzkartasiewicz.login;
 
-import com.grzegorzkartasiewicz.user.User;
 import com.grzegorzkartasiewicz.user.UserDTO;
 import com.grzegorzkartasiewicz.user.UserFacade;
+import com.grzegorzkartasiewicz.user.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 
 public class LoginFacade {
@@ -17,17 +19,17 @@ public class LoginFacade {
         this.userFacade = userFacade;
     }
 
-    User signInUser(User user){
+    UserId signInUser(UserId user){
         return userFacade.createUser(user);
     }
 
-    User logInUser(String login,String password){
+    UserDTO logInUser(String login, String password){
         logger.info("Trying to log in user!");
-       var loggedUser = repository.findAll().stream()
+        Optional<Login> loggedUser = repository.findAll().stream()
                .filter(login1 -> login1.getNick().equals(login))
                .filter(login1 -> login1.getPassword().equals(password))
                .findFirst();
-        return loggedUser.map(Login::getUser).orElse(null);
+        return loggedUser.map(login1 -> userFacade.getUser(login1.getUserId())).orElse(null);
     }
 
 }

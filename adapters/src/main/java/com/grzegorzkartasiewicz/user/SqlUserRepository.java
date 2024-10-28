@@ -11,7 +11,7 @@ interface SqlUserRepository extends Repository<User,Integer> {
 
     Optional<User> findById(Integer id);
 
-    User save(User entity);
+    UserId save(UserId entity);
 }
 
 @org.springframework.stereotype.Repository
@@ -33,7 +33,7 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User entity) {
+    public UserId save(UserId entity) {
         return repository.save(entity);
     }
 }

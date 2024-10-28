@@ -1,6 +1,7 @@
 package com.grzegorzkartasiewicz.user;
 
 
+import com.grzegorzkartasiewicz.comment.CommentId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -69,7 +70,7 @@ class UserController {
     String deleteUserComment(@ModelAttribute("users") UserDTO current, Model model,
                           @PathVariable int commentId){
         logger.info("Deleting comment!");
-        service.deleteComment(commentId);
+        service.deleteComment(new CommentId(commentId));
         model.addAttribute(MODEL_ATTRIBUTE_USER, current);
         return MODEL_ATTRIBUTE_USER;
     }

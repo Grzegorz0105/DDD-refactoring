@@ -9,5 +9,5 @@ interface UserRepository {
 
     Optional<User> findById(Integer id);
 
-    User save(User entity);
+    UserId save(UserId entity);
 }

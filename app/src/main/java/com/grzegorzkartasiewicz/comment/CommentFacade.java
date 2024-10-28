@@ -8,11 +8,11 @@ public class CommentFacade {
     }
 
 
-    public Comment createComment(Comment newComment){
-        return repository.save(newComment);
+    public Comment createComment(CommentCreator newComment){
+        return repository.save(newComment.toEntity());
     }
 
-    public void deleteComment(int commentId){
-        repository.deleteById(commentId);
+    public void deleteComment(CommentId commentId){
+        repository.deleteById(commentId.id());
     }
 }

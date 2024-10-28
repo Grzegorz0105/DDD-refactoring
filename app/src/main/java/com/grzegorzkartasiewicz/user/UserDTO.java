@@ -1,13 +1,9 @@
 package com.grzegorzkartasiewicz.user;
 
-import com.grzegorzkartasiewicz.comment.Comment;
-import com.grzegorzkartasiewicz.login.Login;
-import com.grzegorzkartasiewicz.post.Post;
+import com.grzegorzkartasiewicz.comment.CommentId;
+import com.grzegorzkartasiewicz.login.LoginId;
+import com.grzegorzkartasiewicz.post.PostId;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +12,9 @@ public class UserDTO {
     private String name;
     private String surname;
     private int age;
-    private List<Post> posts = new ArrayList<>();
-    private List<Comment> comments = new ArrayList<>();
-    private Login login;
+    private List<PostId> posts = new ArrayList<PostId>();
+    private List<CommentId> comments = new ArrayList<CommentId>();
+    private LoginId login;
 
     public int getId() {
         return id;
@@ -52,27 +48,27 @@ public class UserDTO {
         this.age = age;
     }
 
-    public List<Post> getPosts() {
+    public List<PostId> getPosts() {
         return posts;
     }
 
-    public void setPosts(List<Post> posts) {
+    public void setPosts(List<PostId> posts) {
         this.posts = posts;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentId> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentId> comments) {
         this.comments = comments;
     }
 
-    public Login getLogin() {
+    public LoginId getLogin() {
         return login;
     }
 
-    public void setLogin(Login login) {
+    public void setLogin(LoginId login) {
         this.login = login;
     }
 
@@ -82,19 +78,9 @@ public class UserDTO {
         userDTO.setName(user.getName());
         userDTO.setSurname(user.getSurname());
         userDTO.setAge(user.getAge());
-        userDTO.setPosts(user.getPosts());
-        userDTO.setComments(user.getComments());
-        userDTO.setLogin(user.getLogin());
+        userDTO.setPosts(user.getPostIds());
+        userDTO.setComments(user.getCommentIds());
+        userDTO.setLogin(user.getLoginId());
         return userDTO;
-    }
-
-    public User toEntity() {
-        User user = new User();
-        user.setId(this.getId());
-        user.setAge(this.getAge());
-        user.setName(this.getName());
-        user.setSurname(this.getSurname());
-        user.setLogin(this.getLogin());
-        return user;
     }
 }

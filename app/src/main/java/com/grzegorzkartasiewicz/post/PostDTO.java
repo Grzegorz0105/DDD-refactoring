@@ -1,7 +1,7 @@
 package com.grzegorzkartasiewicz.post;
 
-import com.grzegorzkartasiewicz.comment.Comment;
-import com.grzegorzkartasiewicz.user.User;
+import com.grzegorzkartasiewicz.comment.CommentId;
+import com.grzegorzkartasiewicz.user.UserId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,11 @@ public class PostDTO {
 
     private String description;
 
-    private User user;
+    private UserId user;
 
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommentId> comments = new ArrayList<CommentId>();
 
-    public PostDTO(int id, String time, String description, User user, List<Comment> comments) {
+    public PostDTO(int id, String time, String description, UserId user, List<CommentId> comments) {
         this.id = id;
         this.time = time;
         this.description = description;
@@ -48,23 +48,23 @@ public class PostDTO {
         this.description = description;
     }
 
-    public User getUser() {
+    public UserId getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserId user) {
         this.user = user;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentId> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentId> comments) {
         this.comments = comments;
     }
 
     public static PostDTO toDTO(Post post) {
-        return new PostDTO(post.getId(), post.getTime(), post.getDescription(), post.getUser(), post.getComments());
+        return new PostDTO(post.getId(), post.getTime(), post.getDescription(), post.getUserId(), post.getCommentIds());
     }
 }

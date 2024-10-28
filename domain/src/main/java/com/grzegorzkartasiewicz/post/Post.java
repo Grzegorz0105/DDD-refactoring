@@ -1,49 +1,46 @@
 package com.grzegorzkartasiewicz.post;
 
-import com.grzegorzkartasiewicz.comment.Comment;
-import com.grzegorzkartasiewicz.user.User;
+import com.grzegorzkartasiewicz.comment.CommentId;
+import com.grzegorzkartasiewicz.user.UserId;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "posts")
+
 public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
     private String time;
-    @NotBlank(message = "Description can not be empty!")
+
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
+
+    private UserId userId;
+
+    private List<CommentId> commentIds = new ArrayList<>();
 
     public Post() {
     }
 
-    public Post(int id, String time, String description, User user, List<Comment> comments) {
+    public Post(int id, String time, String description, UserId userId, List<CommentId> commentIds) {
         this.id = id;
         this.time = time;
         this.description = description;
-        this.user = user;
-        this.comments = comments;
+        this.userId = userId;
+        this.commentIds = commentIds;
+    }
+
+    public Post(String description, UserId userId) {
+        this.description = description;
+        this.userId = userId;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTime() {
@@ -54,24 +51,12 @@ public class Post {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public UserId getUserId() {
+        return userId;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public List<CommentId> getCommentIds() {
+        return commentIds;
     }
 
     @PrePersist
