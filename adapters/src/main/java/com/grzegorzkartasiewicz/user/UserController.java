@@ -1,7 +1,7 @@
 package com.grzegorzkartasiewicz.user;
 
 
-import com.grzegorzkartasiewicz.comment.CommentId;
+import com.grzegorzkartasiewicz.comment.vo.CommentId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -40,7 +40,7 @@ class UserController {
     String addUserPost(HttpSession session, Model model,
                         String description){
         logger.info("Creating new post!");
-        var loggedUser = (User) session.getAttribute(MODEL_ATTRIBUTE_USER);
+        var loggedUser = (UserDTO) session.getAttribute(MODEL_ATTRIBUTE_USER);
         service.createPost(loggedUser.getId(),description);
         model.addAttribute(MODEL_ATTRIBUTE_USER, loggedUser);
         return MODEL_ATTRIBUTE_USER;
@@ -51,7 +51,7 @@ class UserController {
                           @PathVariable int postId,
                           String description){
         logger.info("Creating new comment!");
-        var loggedUser= (User) session.getAttribute(MODEL_ATTRIBUTE_USER);
+        var loggedUser= (UserDTO) session.getAttribute(MODEL_ATTRIBUTE_USER);
         service.createComment(loggedUser,postId,description);
         model.addAttribute(MODEL_ATTRIBUTE_USER, current);
         return MODEL_ATTRIBUTE_USER;

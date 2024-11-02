@@ -1,6 +1,6 @@
 package com.grzegorzkartasiewicz.login;
 
-import com.grzegorzkartasiewicz.user.UserId;
+import com.grzegorzkartasiewicz.user.vo.UserId;
 
 public class LoginDTO {
     private int id;
@@ -8,6 +8,21 @@ public class LoginDTO {
     private String password;
     private String email;
     private UserId user;
+
+    public LoginDTO() {
+    }
+
+    public LoginDTO(int id, String nick, String password, String email, UserId user) {
+        this.id = id;
+        this.nick = nick;
+        this.password = password;
+        this.email = email;
+        this.user = user;
+    }
+
+    public static LoginDTO toDto(Login save) {
+        return  new LoginDTO();
+    }
 
     public int getId() {
         return id;
@@ -47,9 +62,5 @@ public class LoginDTO {
 
     public void setUser(UserId user) {
         this.user = user;
-    }
-
-    public Login toEntity() {
-        return new Login(id, nick, password, email, user);
     }
 }

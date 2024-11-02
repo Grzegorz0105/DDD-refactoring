@@ -1,11 +1,13 @@
 package com.grzegorzkartasiewicz.post;
 
-import com.grzegorzkartasiewicz.comment.Comment;
-import com.grzegorzkartasiewicz.comment.CommentCreator;
+import com.grzegorzkartasiewicz.comment.vo.CommentCreator;
+import com.grzegorzkartasiewicz.comment.CommentDTO;
 import com.grzegorzkartasiewicz.comment.CommentFacade;
-import com.grzegorzkartasiewicz.comment.CommentId;
-import com.grzegorzkartasiewicz.user.User;
-import com.grzegorzkartasiewicz.user.UserId;
+import com.grzegorzkartasiewicz.comment.vo.CommentId;
+import com.grzegorzkartasiewicz.post.vo.PostCreator;
+import com.grzegorzkartasiewicz.post.vo.PostId;
+import com.grzegorzkartasiewicz.user.UserDTO;
+import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,10 +23,10 @@ public class PostFacade {
         this.commentFacade = commentFacade;
     }
 
-    public Post createPost(PostCreator source){
-        return repository.save(source.toEntity());
+    public PostDTO createPost(PostCreator source){
+        return PostDTO.toDTO(repository.save(Post.createFrom(source)));
     }
-    public Comment createComment(User user, int postId,String description){
+    public CommentDTO createComment(UserDTO user, int postId, String description){
         logger.info("Creating comment to save in DB!");
         return repository.findById(postId).map(post -> {
             var targetComment = new CommentCreator(description, new PostId(postId), new UserId(user.getId()));

@@ -1,6 +1,7 @@
 package com.grzegorzkartasiewicz.user;
 
 
+import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.grzegorzkartasiewicz.user;
 
-import com.grzegorzkartasiewicz.comment.CommentId;
-import com.grzegorzkartasiewicz.login.LoginId;
-import com.grzegorzkartasiewicz.post.PostId;
+import com.grzegorzkartasiewicz.comment.vo.CommentId;
+import com.grzegorzkartasiewicz.login.vo.LoginId;
+import com.grzegorzkartasiewicz.post.vo.PostId;
 
 import java.util.ArrayList;
 import java.util.List;

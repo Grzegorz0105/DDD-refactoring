@@ -37,20 +37,20 @@ class LoginController implements ErrorController {
     @GetMapping
     String login(Model model){
         logger.info("Showing login template!");
-        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new Login());
+        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
         return MODEL_ATTRIBUTE_LOGIN;
     }
     @GetMapping("/logout")
     String logout(HttpSession session, Model model){
         logger.info("Logging out user!");
         session.invalidate();
-        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new Login());
+        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
         return MODEL_ATTRIBUTE_LOGIN;
     }
     @GetMapping("/error")
     String error(Model model){
         logger.info("Error has occurred!");
-        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new Login());
+        model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
         return MODEL_ATTRIBUTE_LOGIN;
     }
 
@@ -59,7 +59,7 @@ class LoginController implements ErrorController {
         logger.info("Logging in user!");
         var loggedUser = service.logInUser(login,password);
         if(loggedUser==null){
-            model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new Login());
+            model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
             model.addAttribute("message","Invalid login or password");
             return MODEL_ATTRIBUTE_LOGIN;
         }
@@ -73,7 +73,7 @@ class LoginController implements ErrorController {
             model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
             return MODEL_ATTRIBUTE_LOGIN;
         }
-        repository.save(newLogin.toEntity());
+        service.createLogin(newLogin);
         newLogin.setUser(service.signInUser(newLogin.getUser()));
         session.setAttribute(SESSION_ATTRIBUTE_USER, newLogin.getUser());
         return "redirect:/posts/";

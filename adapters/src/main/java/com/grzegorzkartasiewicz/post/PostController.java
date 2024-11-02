@@ -1,7 +1,7 @@
 package com.grzegorzkartasiewicz.post;
 
-import com.grzegorzkartasiewicz.comment.CommentId;
-import com.grzegorzkartasiewicz.user.User;
+import com.grzegorzkartasiewicz.comment.vo.CommentId;
+import com.grzegorzkartasiewicz.user.UserDTO;
 import com.grzegorzkartasiewicz.user.UserFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ class PostController {
     @GetMapping("/home")
     String showHomePage(Model model){
         logger.info("Showing home page!");
-        var postToEdit = new Post();
+        var postToEdit = new PostDTO();
         model.addAttribute(MODEL_ATTRIBUTE_POSTS, getPosts());
         model.addAttribute("post", postToEdit);
         return MODEL_ATTRIBUTE_POSTS;
@@ -39,7 +39,7 @@ class PostController {
     @GetMapping
     String showPosts(HttpSession session,Model model){
         logger.info("Showing home page for logged user!");
-        var postToEdit = new Post();
+        var postToEdit = new PostDTO();
         session.setAttribute(MODEL_ATTRIBUTE_POSTS, getPosts());
         model.addAttribute(MODEL_ATTRIBUTE_POST, postToEdit);
         return MODEL_ATTRIBUTE_POSTS;
@@ -61,7 +61,7 @@ class PostController {
                        @PathVariable int postId,
                        String description){
         logger.info("Creating new comment!");
-        User user = (User) session.getAttribute("user");
+        UserDTO user = (UserDTO) session.getAttribute("user");
         service.createComment(user, postId, description);
         model.addAttribute(MODEL_ATTRIBUTE_POSTS, getPosts());
         return MODEL_ATTRIBUTE_POSTS;

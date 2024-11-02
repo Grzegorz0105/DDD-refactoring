@@ -7,20 +7,7 @@ import com.grzegorzkartasiewicz.post.vo.PostId;
 import java.util.ArrayList;
 import java.util.List;
 
-
-class User {
-
-    static User restore(UserSnapshot snapshot) {
-        return new User(
-                snapshot.getId(),
-                snapshot.getName(),
-                snapshot.getSurname(),
-                snapshot.getAge(),
-                snapshot.getPostIds(),
-                snapshot.getCommentIds(),
-                snapshot.getLoginId()
-        );
-    }
+class UserSnapshot {
 
     private int id;
 
@@ -35,7 +22,10 @@ class User {
 
     private LoginId loginId;
 
-    private User(int id, String name, String surname, int age, List<PostId> postIds, List<CommentId> commentIds, LoginId loginId) {
+    protected UserSnapshot() {
+    }
+
+    UserSnapshot(int id, String name, String surname, int age, List<PostId> postIds, List<CommentId> commentIds, LoginId loginId) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -45,4 +35,31 @@ class User {
         this.loginId = loginId;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public List<PostId> getPostIds() {
+        return postIds;
+    }
+
+    public List<CommentId> getCommentIds() {
+        return commentIds;
+    }
+
+    public LoginId getLoginId() {
+        return loginId;
+    }
 }

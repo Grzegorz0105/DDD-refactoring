@@ -1,6 +1,8 @@
 package com.grzegorzkartasiewicz.user;
 
 
+import com.grzegorzkartasiewicz.user.vo.UserId;
+
 import java.util.List;
 import java.util.Optional;
 
