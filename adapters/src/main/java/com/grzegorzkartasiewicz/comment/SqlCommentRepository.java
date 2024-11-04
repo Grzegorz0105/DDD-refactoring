@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 
-interface SqlCommentRepository extends Repository<Comment,Integer> {
-    List<Comment> findAll();
+interface SqlCommentRepository extends Repository<CommentSnapshot,Integer> {
+    List<CommentSnapshot> findAll();
 
-    Optional<Comment> findById(Integer id);
+    Optional<CommentSnapshot> findById(Integer id);
 
-    Comment save(Comment entity);
+    CommentSnapshot save(CommentSnapshot entity);
 
     void deleteById(Integer integer);
 }
@@ -28,17 +28,17 @@ class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public List<Comment> findAll() {
-        return repository.findAll();
+        return repository.findAll().stream().map(Comment::restore).toList();
     }
 
     @Override
     public Optional<Comment> findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).map(Comment::restore);
     }
 
     @Override
     public Comment save(Comment entity) {
-        return repository.save(entity);
+        return Comment.restore(repository.save(entity.getSnapshot()));
     }
 
     @Override

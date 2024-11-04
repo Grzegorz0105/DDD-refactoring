@@ -6,6 +6,7 @@ package com.grzegorzkartasiewicz.login;
  *
  */
 
+import com.grzegorzkartasiewicz.user.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -67,15 +68,16 @@ class LoginController implements ErrorController {
         return "redirect:/posts/";
     }
     @PostMapping(path = "/sign")
-    String signUpUser(HttpSession session, Model model, @ModelAttribute("login") @Valid LoginDTO newLogin, BindingResult bindingResult){
+    String signUpUser(HttpSession session, Model model, @ModelAttribute("login") @Valid LoginDTO newLogin,
+                      UserDTO user,  BindingResult bindingResult){
         logger.info("Signing up new user!");
         if(bindingResult.hasErrors()){
             model.addAttribute(MODEL_ATTRIBUTE_LOGIN,new LoginDTO());
             return MODEL_ATTRIBUTE_LOGIN;
         }
         service.createLogin(newLogin);
-        newLogin.setUser(service.signInUser(newLogin.getUser()));
-        session.setAttribute(SESSION_ATTRIBUTE_USER, newLogin.getUser());
+        UserDTO userDTO = service.signInUser(user);
+        session.setAttribute(SESSION_ATTRIBUTE_USER, userDTO);
         return "redirect:/posts/";
     }
 }

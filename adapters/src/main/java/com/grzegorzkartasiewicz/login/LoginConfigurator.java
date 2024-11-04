@@ -1,5 +1,6 @@
 package com.grzegorzkartasiewicz.login;
 
+import com.grzegorzkartasiewicz.SpringDomainEventPublisher;
 import com.grzegorzkartasiewicz.user.UserFacade;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class LoginConfigurator {
 
     @Bean
-    LoginFacade loginFacade(final LoginRepository loginRepository, final UserFacade userFacade) {
-        return new LoginFacade(loginRepository, userFacade);
+    LoginFacade loginFacade(final LoginRepository loginRepository, final UserFacade userFacade, final SpringDomainEventPublisher springDomainEventPublisher) {
+        return new LoginFacade(loginRepository, userFacade, springDomainEventPublisher);
     }
 }

@@ -39,4 +39,8 @@ class Comment {
         this.postId = postId;
         this.userId = userId;
     }
+
+    CommentSnapshot getSnapshot() {
+        return new CommentSnapshot(id, description, postId, userId);
+    }
 }

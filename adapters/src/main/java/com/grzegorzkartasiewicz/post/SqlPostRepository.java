@@ -5,12 +5,12 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 
-interface SqlPostRepository extends Repository<Post,Integer> {
-    List<Post> findAll();
+interface SqlPostRepository extends Repository<PostSnapshot, Integer> {
+    List<PostSnapshot> findAll();
 
-    Optional<Post> findById(Integer id);
+    Optional<PostSnapshot> findById(Integer id);
 
-    Post save(Post entity);
+    PostSnapshot save(PostSnapshot entity);
 
     void deleteById(Integer integer);
 }
@@ -26,17 +26,17 @@ class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return repository.findAll();
+        return repository.findAll().stream().map(Post::restore).toList();
     }
 
     @Override
     public Optional<Post> findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).map(Post::restore);
     }
 
     @Override
     public Post save(Post entity) {
-        return repository.save(entity);
+        return Post.restore(repository.save(entity.getSnapshot()));
     }
 
     @Override

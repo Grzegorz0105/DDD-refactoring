@@ -1,18 +1,17 @@
 package com.grzegorzkartasiewicz.user;
 
 
-import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-interface SqlUserRepository extends Repository<User,Integer> {
-    List<User> findAll();
+interface SqlUserRepository extends Repository<UserSnapshot,Integer> {
+    List<UserSnapshot> findAll();
 
-    Optional<User> findById(Integer id);
+    Optional<UserSnapshot> findById(Integer id);
 
-    UserId save(UserId entity);
+    UserSnapshot save(UserSnapshot entity);
 }
 
 @org.springframework.stereotype.Repository
@@ -25,16 +24,16 @@ class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return  repository.findAll();
+        return  repository.findAll().stream().map(User::restore).toList();
     }
 
     @Override
     public Optional<User> findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).map(User::restore);
     }
 
     @Override
-    public UserId save(UserId entity) {
-        return repository.save(entity);
+    public User save(User entity) {
+        return User.restore(repository.save(entity.getSnapshot()));
     }
 }

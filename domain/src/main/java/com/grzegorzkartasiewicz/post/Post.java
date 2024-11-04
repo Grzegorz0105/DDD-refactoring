@@ -35,7 +35,7 @@ class Post {
 
     private UserId userId;
 
-    private List<CommentId> commentIds = new ArrayList<>();
+    private List<CommentId> commentIds;
 
 
     private Post(int id, String description, UserId userId, List<CommentId> commentIds) {
@@ -43,5 +43,14 @@ class Post {
         this.description = description;
         this.userId = userId;
         this.commentIds = commentIds;
+    }
+
+    PostSnapshot getSnapshot() {
+        return new PostSnapshot(id, description, userId, commentIds);
+    }
+
+    Post edit(String description) {
+        this.description = description;
+        return this;
     }
 }

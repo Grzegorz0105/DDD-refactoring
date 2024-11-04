@@ -44,4 +44,8 @@ class Login {
         this.email = email;
         this.userId = userId;
     }
+
+    LoginSnapshot getSnapshot() {
+        return new LoginSnapshot(id, nick, password, email, userId);
+    }
 }

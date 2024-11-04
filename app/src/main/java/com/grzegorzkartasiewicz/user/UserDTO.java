@@ -72,15 +72,16 @@ public class UserDTO {
         this.login = login;
     }
 
-    public static UserDTO toDTO(User user) {
+    static UserDTO toDTO(User user) {
+        UserSnapshot userSnapshot = user.getSnapshot();
         UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setSurname(user.getSurname());
-        userDTO.setAge(user.getAge());
-        userDTO.setPosts(user.getPostIds());
-        userDTO.setComments(user.getCommentIds());
-        userDTO.setLogin(user.getLoginId());
+        userDTO.setId(userSnapshot.getId());
+        userDTO.setName(userSnapshot.getName());
+        userDTO.setSurname(userSnapshot.getSurname());
+        userDTO.setAge(userSnapshot.getAge());
+        userDTO.setPosts(userSnapshot.getPostIds());
+        userDTO.setComments(userSnapshot.getCommentIds());
+        userDTO.setLogin(userSnapshot.getLoginId());
         return userDTO;
     }
 }

@@ -12,7 +12,8 @@ public class CommentFacade {
 
 
     public CommentDTO createComment(CommentCreator newComment){
-        return CommentDTO.toDTO(repository.save(Comment.createFrom(newComment)));
+        Comment savedComment = repository.save(Comment.createFrom(newComment));
+        return CommentDTO.toDTO(savedComment);
     }
 
     public void deleteComment(CommentId commentId){

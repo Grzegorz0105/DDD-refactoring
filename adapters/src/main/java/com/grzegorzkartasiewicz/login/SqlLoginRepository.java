@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
 
-interface SqlLoginRepository extends Repository<Login,Integer> {
-    List<Login> findAll();
+interface SqlLoginRepository extends Repository<LoginSnapshot,Integer> {
+    List<LoginSnapshot> findAll();
 
-    Optional<Login> findById(Integer id);
+    Optional<LoginSnapshot> findById(Integer id);
 
-    Login save(Login entity);
+    LoginSnapshot save(LoginSnapshot entity);
 }
 
 @org.springframework.stereotype.Repository
@@ -24,16 +24,16 @@ class LoginRepositoryImpl implements LoginRepository {
 
     @Override
     public List<Login> findAll() {
-        return repository.findAll();
+        return repository.findAll().stream().map(Login::restore).toList();
     }
 
     @Override
     public Optional<Login> findById(Integer id) {
-        return repository.findById(id);
+        return repository.findById(id).map(Login::restore);
     }
 
     @Override
     public Login save(Login entity) {
-        return repository.save(entity);
+        return Login.restore(repository.save(entity.getSnapshot()));
     }
 }

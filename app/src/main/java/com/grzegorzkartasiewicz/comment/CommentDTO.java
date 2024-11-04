@@ -51,7 +51,9 @@ public class CommentDTO {
         this.userId = userId;
     }
 
-    public static CommentDTO toDTO(Comment comment) {
-        return new CommentDTO(comment.getId(), comment.getDescription(), comment.getPostId(), comment.getUserId());
+    static CommentDTO toDTO(Comment comment) {
+        CommentSnapshot commentSnapshot = comment.getSnapshot();
+        return new CommentDTO(commentSnapshot.getId(), commentSnapshot.getDescription(), commentSnapshot.getPostId(),
+                commentSnapshot.getUserId());
     }
 }

@@ -11,5 +11,5 @@ interface UserRepository {
 
     Optional<User> findById(Integer id);
 
-    UserId save(UserId entity);
+    User save(User entity);
 }

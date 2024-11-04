@@ -57,7 +57,8 @@ public class PostDTO {
         this.comments = comments;
     }
 
-    public static PostDTO toDTO(Post post) {
-        return new PostDTO(post.getId(), post.getDescription(), post.getUserId(), post.getCommentIds());
+    static PostDTO toDTO(Post post) {
+        PostSnapshot postSnapshot = post.getSnapshot();
+        return new PostDTO(postSnapshot.getId(), postSnapshot.getDescription(), postSnapshot.getUserId(), postSnapshot.getCommentIds());
     }
 }

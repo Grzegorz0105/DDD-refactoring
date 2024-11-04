@@ -18,7 +18,7 @@ public class PostFacade {
     private final PostRepository repository;
     private final CommentFacade commentFacade;
 
-    public PostFacade(PostRepository repository, CommentFacade commentFacade) {
+    PostFacade(PostRepository repository, CommentFacade commentFacade) {
         this.repository = repository;
         this.commentFacade = commentFacade;
     }
@@ -34,9 +34,18 @@ public class PostFacade {
         }).orElseThrow(() ->new IllegalArgumentException("Post with given id was not found!"));
     }
 
-    List<Post> searchPosts(String search) {
+    public PostDTO editPost(PostId postId, String description) {
+        logger.info("Edit post with id: {}", postId.id());
+        return repository.findById(postId.id()).map(post -> post.edit(description)).map(PostDTO::toDTO).orElse(null);
+    }
+
+    List<PostDTO> searchPosts(String search) {
         logger.info("Searching for matching users and posts!");
-        return repository.findAll().stream().filter(post -> post.getDescription().toLowerCase().contains(search.toLowerCase())).toList();
+        return repository.findAll().stream()
+                .map(Post::getSnapshot)
+                .filter(post -> post.getDescription().toLowerCase().contains(search.toLowerCase()))
+                .map(postSnapshot -> PostDTO.toDTO(Post.restore(postSnapshot)))
+                .toList();
     }
 
     public void deleteComment(CommentId commentId){
@@ -45,6 +54,7 @@ public class PostFacade {
 
     public void deletePost(int postId) {
         repository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post with given id not found"))
+                .getSnapshot()
                 .getCommentIds().forEach(commentFacade::deleteComment);
         repository.deleteById(postId);
     }

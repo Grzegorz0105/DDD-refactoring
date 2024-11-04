@@ -5,6 +5,7 @@ import com.grzegorzkartasiewicz.comment.vo.CommentId;
 import com.grzegorzkartasiewicz.post.vo.PostCreator;
 import com.grzegorzkartasiewicz.post.PostDTO;
 import com.grzegorzkartasiewicz.post.PostFacade;
+import com.grzegorzkartasiewicz.user.vo.UserCreator;
 import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +49,8 @@ public class UserFacade {
                 .toList();
     }
 
-    public UserId createUser(UserId user) {
-        return repository.save(user);
+    public UserDTO createUser(UserCreator userCreator) {
+        return UserDTO.toDTO(repository.save(User.createFrom(userCreator)));
     }
 
     public UserDTO getUser(UserId userId) {

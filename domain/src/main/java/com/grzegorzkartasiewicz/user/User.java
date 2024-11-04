@@ -3,6 +3,7 @@ package com.grzegorzkartasiewicz.user;
 import com.grzegorzkartasiewicz.comment.vo.CommentId;
 import com.grzegorzkartasiewicz.login.vo.LoginId;
 import com.grzegorzkartasiewicz.post.vo.PostId;
+import com.grzegorzkartasiewicz.user.vo.UserCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,18 @@ class User {
                 snapshot.getPostIds(),
                 snapshot.getCommentIds(),
                 snapshot.getLoginId()
+        );
+    }
+
+    static User createFrom(final UserCreator source) {
+        return new User(
+                0,
+                source.name(),
+                source.surname(),
+                source.age(),
+                null,
+                null,
+                source.loginId()
         );
     }
 
@@ -43,6 +56,10 @@ class User {
         this.postIds = postIds;
         this.commentIds = commentIds;
         this.loginId = loginId;
+    }
+
+    UserSnapshot getSnapshot() {
+        return new UserSnapshot(id, name, surname, age, postIds, commentIds, loginId);
     }
 
 }
