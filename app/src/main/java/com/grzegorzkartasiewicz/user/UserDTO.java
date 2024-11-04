@@ -12,8 +12,6 @@ public class UserDTO {
     private String name;
     private String surname;
     private int age;
-    private List<PostId> posts = new ArrayList<PostId>();
-    private List<CommentId> comments = new ArrayList<CommentId>();
     private LoginId login;
 
     public int getId() {
@@ -48,22 +46,6 @@ public class UserDTO {
         this.age = age;
     }
 
-    public List<PostId> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<PostId> posts) {
-        this.posts = posts;
-    }
-
-    public List<CommentId> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<CommentId> comments) {
-        this.comments = comments;
-    }
-
     public LoginId getLogin() {
         return login;
     }
@@ -79,8 +61,6 @@ public class UserDTO {
         userDTO.setName(userSnapshot.getName());
         userDTO.setSurname(userSnapshot.getSurname());
         userDTO.setAge(userSnapshot.getAge());
-        userDTO.setPosts(userSnapshot.getPostIds());
-        userDTO.setComments(userSnapshot.getCommentIds());
         userDTO.setLogin(userSnapshot.getLoginId());
         return userDTO;
     }

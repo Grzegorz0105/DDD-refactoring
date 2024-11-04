@@ -53,9 +53,8 @@ public class PostFacade {
     }
 
     public void deletePost(int postId) {
-        repository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post with given id not found"))
-                .getSnapshot()
-                .getCommentIds().forEach(commentFacade::deleteComment);
+        repository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post with given id not found"));
+        commentFacade.deleteCommentsForPost(new PostId(postId));
         repository.deleteById(postId);
     }
 }

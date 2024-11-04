@@ -8,7 +8,6 @@ import com.grzegorzkartasiewicz.login.vo.LoginId;
 import com.grzegorzkartasiewicz.user.UserDTO;
 import com.grzegorzkartasiewicz.user.UserFacade;
 import com.grzegorzkartasiewicz.user.vo.UserCreator;
-import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

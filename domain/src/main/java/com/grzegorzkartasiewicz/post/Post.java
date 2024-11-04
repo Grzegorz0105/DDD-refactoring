@@ -1,12 +1,7 @@
 package com.grzegorzkartasiewicz.post;
 
-import com.grzegorzkartasiewicz.comment.vo.CommentId;
 import com.grzegorzkartasiewicz.post.vo.PostCreator;
 import com.grzegorzkartasiewicz.user.vo.UserId;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 class Post {
@@ -15,8 +10,7 @@ class Post {
         return new Post(
                 snapshot.getId(),
                 snapshot.getDescription(),
-                snapshot.getUserId(),
-                snapshot.getCommentIds()
+                snapshot.getUserId()
         );
     }
 
@@ -24,8 +18,7 @@ class Post {
         return new Post(
                 0,
                 source.description(),
-                source.userId(),
-                null
+                source.userId()
         );
     }
 
@@ -35,18 +28,15 @@ class Post {
 
     private UserId userId;
 
-    private List<CommentId> commentIds;
 
-
-    private Post(int id, String description, UserId userId, List<CommentId> commentIds) {
+    private Post(int id, String description, UserId userId) {
         this.id = id;
         this.description = description;
         this.userId = userId;
-        this.commentIds = commentIds;
     }
 
     PostSnapshot getSnapshot() {
-        return new PostSnapshot(id, description, userId, commentIds);
+        return new PostSnapshot(id, description, userId);
     }
 
     Post edit(String description) {

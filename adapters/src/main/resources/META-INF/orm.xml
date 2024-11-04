@@ -61,9 +61,6 @@
             <basic name="description">
                 <column name="description"/>
             </basic>
-            <one-to-many name="commentIds" fetch="EAGER">
-                <join-column name="post_id"/>
-            </one-to-many>
             <embedded name="userId">
                 <attribute-override name="id">
                     <column name="user_id"/>
@@ -87,12 +84,6 @@
             <basic name="age">
                 <column name="age"/>
             </basic>
-            <one-to-many name="postIds" fetch="EAGER">
-                <join-column name="user_id"/>
-            </one-to-many>
-            <one-to-many name="commentIds" fetch="EAGER">
-                <join-column name="user_id"/>
-            </one-to-many>
             <embedded name="loginId">
                 <attribute-override name="id">
                     <column name="login_id"/>

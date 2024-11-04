@@ -2,6 +2,7 @@ package com.grzegorzkartasiewicz.comment;
 
 import com.grzegorzkartasiewicz.comment.vo.CommentCreator;
 import com.grzegorzkartasiewicz.comment.vo.CommentId;
+import com.grzegorzkartasiewicz.post.vo.PostId;
 
 public class CommentFacade {
     private final CommentRepository repository;
@@ -18,5 +19,11 @@ public class CommentFacade {
 
     public void deleteComment(CommentId commentId){
         repository.deleteById(commentId.id());
+    }
+
+    public void deleteCommentsForPost(PostId postId){
+        repository.findAll().stream().map(Comment::getSnapshot)
+                .filter(comment -> comment.getPostId().id() == postId.id())
+                .forEach(comment -> repository.deleteById(comment.getId()));
     }
 }
