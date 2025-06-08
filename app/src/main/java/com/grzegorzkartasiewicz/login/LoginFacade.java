@@ -11,8 +11,6 @@ import com.grzegorzkartasiewicz.user.vo.UserCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
-
 
 public class LoginFacade {
     private static final Logger logger = LoggerFactory.getLogger(LoginFacade.class);
@@ -28,10 +26,14 @@ public class LoginFacade {
 
     LoginDTO createLogin(LoginDTO loginDTO) {
         LoginCreator loginCreator = new LoginCreator(loginDTO.getId(), loginDTO.getNick(), loginDTO.getPassword(), loginDTO.getEmail());
+
         Login savedLogin = repository.save(Login.createFrom(loginCreator));
+
         LoginSnapshot savedLoginSnapshot = savedLogin.getSnapshot();
+
         publisher.publish(new LoginEvent(new LoginId(savedLoginSnapshot.getId()), DomainEvent.State.CREATED,
                 new LoginEvent.LoginData(savedLoginSnapshot.getNick(), savedLoginSnapshot.getPassword(), savedLoginSnapshot.getEmail())));
+
         return LoginDTO.toDto(savedLogin);
     }
 
@@ -42,11 +44,10 @@ public class LoginFacade {
 
     UserDTO logInUser(String nick, String password) {
         logger.info("Trying to log in user!");
-        Optional<LoginSnapshot> loggedUser = repository.findAll().stream()
-                .map(Login::getSnapshot)
-                .filter(login -> login.getNick().equals(nick) && login.getPassword().equals(password))
-                .findFirst();
-        return loggedUser.map(login1 -> userFacade.getUser(login1.getUserId())).orElse(null);
+        return repository.findByNick(nick)
+                .filter(login -> login.hasMatchingPassword(password))
+                .map(login -> userFacade.getUser(login.getSnapshot().getUserId()))
+                .orElse(null);
     }
 
 }

@@ -1,7 +1,14 @@
 package com.grzegorzkartasiewicz.post;
 
+import com.grzegorzkartasiewicz.DomainEvent;
+import com.grzegorzkartasiewicz.comment.vo.CommentCreator;
 import com.grzegorzkartasiewicz.post.vo.PostCreator;
+import com.grzegorzkartasiewicz.post.vo.PostDeletedEvent;
+import com.grzegorzkartasiewicz.post.vo.PostId;
 import com.grzegorzkartasiewicz.user.vo.UserId;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 class Post {
@@ -21,6 +28,8 @@ class Post {
                 source.userId()
         );
     }
+
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     private int id;
 
@@ -42,5 +51,21 @@ class Post {
     Post edit(String description) {
         this.description = description;
         return this;
+    }
+
+    CommentCreator prepareNewComment(final String description, final UserId authorId) {
+        return new CommentCreator(description, new PostId(this.id), authorId);
+    }
+
+    void markAsDeleted() {
+        this.domainEvents.add(new PostDeletedEvent(new PostId(this.id)));
+    }
+
+    List<DomainEvent> getDomainEvents() {
+        return List.copyOf(domainEvents);
+    }
+
+    void clearDomainEvents() {
+        this.domainEvents.clear();
     }
 }

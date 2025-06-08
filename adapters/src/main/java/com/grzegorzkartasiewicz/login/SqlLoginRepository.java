@@ -11,6 +11,8 @@ interface SqlLoginRepository extends Repository<LoginSnapshot,Integer> {
 
     Optional<LoginSnapshot> findById(Integer id);
 
+    Optional<LoginSnapshot> findByNick(String nick);
+
     LoginSnapshot save(LoginSnapshot entity);
 }
 
@@ -30,6 +32,11 @@ class LoginRepositoryImpl implements LoginRepository {
     @Override
     public Optional<Login> findById(Integer id) {
         return repository.findById(id).map(Login::restore);
+    }
+
+    @Override
+    public Optional<Login> findByNick(String nick) {
+        return repository.findByNick(nick).map(Login::restore);
     }
 
     @Override

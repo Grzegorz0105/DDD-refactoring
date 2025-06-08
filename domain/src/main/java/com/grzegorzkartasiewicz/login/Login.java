@@ -48,4 +48,8 @@ class Login {
     LoginSnapshot getSnapshot() {
         return new LoginSnapshot(id, nick, password, email, userId);
     }
+
+    boolean hasMatchingPassword(String password) {
+        return this.password.equals(password);
+    }
 }

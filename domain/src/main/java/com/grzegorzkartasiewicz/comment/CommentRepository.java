@@ -2,6 +2,8 @@ package com.grzegorzkartasiewicz.comment;
 
 
 
+import com.grzegorzkartasiewicz.post.vo.PostId;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +15,6 @@ interface CommentRepository {
     Comment save(Comment entity);
 
     void deleteById(Integer integer);
+
+    void deleteAllByPostId(PostId postId);
 }

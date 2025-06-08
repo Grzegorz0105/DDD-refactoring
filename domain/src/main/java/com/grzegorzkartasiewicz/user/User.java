@@ -1,7 +1,9 @@
 package com.grzegorzkartasiewicz.user;
 
 import com.grzegorzkartasiewicz.login.vo.LoginId;
+import com.grzegorzkartasiewicz.post.vo.PostCreator;
 import com.grzegorzkartasiewicz.user.vo.UserCreator;
+import com.grzegorzkartasiewicz.user.vo.UserId;
 
 
 class User {
@@ -45,6 +47,10 @@ class User {
 
     UserSnapshot getSnapshot() {
         return new UserSnapshot(id, name, surname, age, loginId);
+    }
+
+    PostCreator prepareNewPost(final String description) {
+        return new PostCreator(description, new UserId(this.id));
     }
 
 }

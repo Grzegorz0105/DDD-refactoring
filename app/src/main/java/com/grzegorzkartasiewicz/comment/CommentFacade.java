@@ -22,8 +22,6 @@ public class CommentFacade {
     }
 
     public void deleteCommentsForPost(PostId postId){
-        repository.findAll().stream().map(Comment::getSnapshot)
-                .filter(comment -> comment.getPostId().id() == postId.id())
-                .forEach(comment -> repository.deleteById(comment.getId()));
+        repository.deleteAllByPostId(postId);
     }
 }

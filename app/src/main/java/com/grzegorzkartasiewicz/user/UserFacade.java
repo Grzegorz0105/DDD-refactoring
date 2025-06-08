@@ -24,10 +24,12 @@ public class UserFacade {
 
     public PostDTO createPost(int id, String description) {
         logger.info("Creating post to save in DB!");
-        return repository.findById(id).map(user -> {
-            PostCreator targetPost = new PostCreator(description, new UserId(id));
-            return postFacade.createPost(targetPost);
-        }).orElseThrow(() -> new IllegalArgumentException("User with given id was not found!"));
+        User user = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with given id was not found!"));
+
+        PostCreator postCreator = user.prepareNewPost(description);
+
+        return postFacade.createPost(postCreator);
     }
 
     CommentDTO createComment(UserDTO user, int postId, String description) {

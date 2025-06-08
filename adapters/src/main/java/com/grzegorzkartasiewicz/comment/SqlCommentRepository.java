@@ -2,8 +2,11 @@ package com.grzegorzkartasiewicz.comment;
 
 
 
+import com.grzegorzkartasiewicz.post.vo.PostId;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +19,10 @@ interface SqlCommentRepository extends Repository<CommentSnapshot,Integer> {
     CommentSnapshot save(CommentSnapshot entity);
 
     void deleteById(Integer integer);
+
+    @Modifying
+    @Transactional
+    void deleteAllByPostId(PostId postId);
 }
 
 @org.springframework.stereotype.Repository
@@ -44,5 +51,10 @@ class CommentRepositoryImpl implements CommentRepository {
     @Override
     public void deleteById(Integer integer) {
         repository.deleteById(integer);
+    }
+
+    @Override
+    public void deleteAllByPostId(PostId postId) {
+        repository.deleteAllByPostId(postId);
     }
 }

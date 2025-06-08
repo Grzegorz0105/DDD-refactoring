@@ -10,5 +10,7 @@ interface LoginRepository {
 
     Optional<Login> findById(Integer id);
 
+    Optional<Login> findByNick(String nick);
+
     Login save(Login entity);
 }

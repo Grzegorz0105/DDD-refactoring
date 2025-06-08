@@ -1,5 +1,6 @@
 package com.grzegorzkartasiewicz.post;
 
+import com.grzegorzkartasiewicz.DomainEventPublisher;
 import com.grzegorzkartasiewicz.comment.vo.CommentCreator;
 import com.grzegorzkartasiewicz.comment.CommentDTO;
 import com.grzegorzkartasiewicz.comment.CommentFacade;
@@ -17,10 +18,12 @@ public class PostFacade {
     private static final Logger logger = LoggerFactory.getLogger(PostFacade.class);
     private final PostRepository repository;
     private final CommentFacade commentFacade;
+    private final DomainEventPublisher publisher;
 
-    PostFacade(PostRepository repository, CommentFacade commentFacade) {
+    PostFacade(PostRepository repository, CommentFacade commentFacade, DomainEventPublisher publisher) {
         this.repository = repository;
         this.commentFacade = commentFacade;
+        this.publisher = publisher;
     }
 
     public PostDTO createPost(PostCreator source){
@@ -28,10 +31,12 @@ public class PostFacade {
     }
     public CommentDTO createComment(UserDTO user, int postId, String description){
         logger.info("Creating comment to save in DB!");
-        return repository.findById(postId).map(post -> {
-            var targetComment = new CommentCreator(description, new PostId(postId), new UserId(user.getId()));
-            return commentFacade.createComment(targetComment);
-        }).orElseThrow(() ->new IllegalArgumentException("Post with given id was not found!"));
+        Post post = repository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post with given id was not found!"));
+
+        CommentCreator commentCreator = post.prepareNewComment(description, new UserId(user.getId()));
+
+        return commentFacade.createComment(commentCreator);
     }
 
     public PostDTO editPost(PostId postId, String description) {
@@ -53,8 +58,15 @@ public class PostFacade {
     }
 
     public void deletePost(int postId) {
-        repository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post with given id not found"));
-        commentFacade.deleteCommentsForPost(new PostId(postId));
+        Post post = repository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post with given id not found"));
+
+        post.markAsDeleted();
+
+        post.getDomainEvents().forEach(publisher::publish);
+        post.clearDomainEvents();
+
         repository.deleteById(postId);
+        logger.info("Post with id: {} deleted and PostDeletedEvent published.", postId);
     }
 }
