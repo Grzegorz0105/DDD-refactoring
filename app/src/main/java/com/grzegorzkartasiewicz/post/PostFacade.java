@@ -46,10 +46,8 @@ public class PostFacade {
 
     List<PostDTO> searchPosts(String search) {
         logger.info("Searching for matching users and posts!");
-        return repository.findAll().stream()
-                .map(Post::getSnapshot)
-                .filter(post -> post.getDescription().toLowerCase().contains(search.toLowerCase()))
-                .map(postSnapshot -> PostDTO.toDTO(Post.restore(postSnapshot)))
+        return repository.findAllByDescriptionContainingIgnoreCase(search).stream()
+                .map(PostDTO::toDTO)
                 .toList();
     }
 

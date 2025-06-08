@@ -45,9 +45,8 @@ public class UserFacade {
     }
 
     public List<UserDTO> searchUsers(String search) {
-        return repository.findAll().stream().map(UserDTO::toDTO)
-                .filter(user -> user.getName().toLowerCase().contains(search.toLowerCase())
-                        || user.getSurname().toLowerCase().contains(search.toLowerCase()))
+        return repository.findAllByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(search).stream()
+                .map(UserDTO::toDTO)
                 .toList();
     }
 

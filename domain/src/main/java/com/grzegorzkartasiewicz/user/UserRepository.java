@@ -12,4 +12,6 @@ interface UserRepository {
     Optional<User> findById(Integer id);
 
     User save(User entity);
+
+    List<User> findAllByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String query);
 }

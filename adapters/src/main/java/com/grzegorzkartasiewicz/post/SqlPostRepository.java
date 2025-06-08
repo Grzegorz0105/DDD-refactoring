@@ -13,6 +13,8 @@ interface SqlPostRepository extends Repository<PostSnapshot, Integer> {
     PostSnapshot save(PostSnapshot entity);
 
     void deleteById(Integer integer);
+
+    List<PostSnapshot> findAllByDescriptionContainingIgnoreCase(String description);
 }
 
 
@@ -42,5 +44,12 @@ class PostRepositoryImpl implements PostRepository {
     @Override
     public void deleteById(Integer integer) {
         repository.deleteById(integer);
+    }
+
+    @Override
+    public List<Post> findAllByDescriptionContainingIgnoreCase(String description) {
+        return repository.findAllByDescriptionContainingIgnoreCase(description).stream()
+                .map(Post::restore)
+                .toList();
     }
 }

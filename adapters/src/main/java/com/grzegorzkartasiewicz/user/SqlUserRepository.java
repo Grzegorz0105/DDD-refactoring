@@ -12,6 +12,8 @@ interface SqlUserRepository extends Repository<UserSnapshot,Integer> {
     Optional<UserSnapshot> findById(Integer id);
 
     UserSnapshot save(UserSnapshot entity);
+
+    List<UserSnapshot> findAllByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String name, String surname);
 }
 
 @org.springframework.stereotype.Repository
@@ -35,5 +37,12 @@ class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User entity) {
         return User.restore(repository.save(entity.getSnapshot()));
+    }
+
+    @Override
+    public List<User> findAllByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String query) {
+        return repository.findAllByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(query, query).stream()
+                .map(User::restore)
+                .toList();
     }
 }

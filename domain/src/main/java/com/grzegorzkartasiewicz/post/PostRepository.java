@@ -12,4 +12,6 @@ interface PostRepository {
     Post save(Post entity);
 
     void deleteById(Integer integer);
+
+    List<Post> findAllByDescriptionContainingIgnoreCase(String description);
 }
