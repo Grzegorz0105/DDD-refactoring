@@ -14,7 +14,7 @@ class UserTest {
     @DisplayName("should prepare post creator with correct data")
     void shouldPreparePostCreatorWithCorrectData() {
         // given
-        var userSnapshot = new UserSnapshot(1, "John", "Doe", 30, new LoginId(1));
+        var userSnapshot = new UserSnapshot(1, "John", "Doe", 30);
         var user = User.restore(userSnapshot);
         var description = "This is a new post.";
 

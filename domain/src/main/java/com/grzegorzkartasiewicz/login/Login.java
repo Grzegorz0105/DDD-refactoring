@@ -19,7 +19,7 @@ class Login {
 
     static Login createFrom(final LoginCreator source) {
         return new Login(
-                source.id(),
+                0,
                 source.nick(),
                 source.password(),
                 source.email(),
@@ -51,5 +51,11 @@ class Login {
 
     boolean hasMatchingPassword(String password) {
         return this.password.equals(password);
+    }
+
+    void assignUser(int userId) {
+        if (this.userId == null) {
+            this.userId = new UserId(userId);
+        }
     }
 }

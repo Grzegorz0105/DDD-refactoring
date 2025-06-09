@@ -84,11 +84,6 @@
             <basic name="age">
                 <column name="age"/>
             </basic>
-            <embedded name="loginId">
-                <attribute-override name="id">
-                    <column name="login_id"/>
-                </attribute-override>
-            </embedded>
         </attributes>
     </entity>
 

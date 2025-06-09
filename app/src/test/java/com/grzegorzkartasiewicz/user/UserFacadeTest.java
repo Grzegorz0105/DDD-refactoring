@@ -35,7 +35,7 @@ class UserFacadeTest {
         // given
         int userId = 1;
         String description = "New post from facade test";
-        var userSnapshot = new UserSnapshot(userId, "Test", "User", 25, new LoginId(1));
+        var userSnapshot = new UserSnapshot(userId, "Test", "User", 25);
         var user = User.restore(userSnapshot);
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 

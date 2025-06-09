@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 class LoginConfigurator {
 
     @Bean
-    LoginFacade loginFacade(final LoginRepository loginRepository, final UserFacade userFacade, final SpringDomainEventPublisher springDomainEventPublisher) {
-        return new LoginFacade(loginRepository, userFacade, springDomainEventPublisher);
+    LoginFacade loginFacade(final LoginRepository loginRepository, final UserFacade userFacade) {
+        return new LoginFacade(loginRepository, userFacade);
     }
 }

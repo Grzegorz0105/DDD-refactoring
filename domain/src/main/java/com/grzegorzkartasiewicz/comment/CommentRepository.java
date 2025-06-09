@@ -17,4 +17,6 @@ interface CommentRepository {
     void deleteById(Integer integer);
 
     void deleteAllByPostId(PostId postId);
+
+    List<Comment> findAllByPostId(PostId postId);
 }

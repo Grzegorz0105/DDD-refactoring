@@ -1,5 +1,6 @@
 package com.grzegorzkartasiewicz.post;
 
+import com.grzegorzkartasiewicz.user.vo.UserId;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
@@ -15,6 +16,8 @@ interface SqlPostRepository extends Repository<PostSnapshot, Integer> {
     void deleteById(Integer integer);
 
     List<PostSnapshot> findAllByDescriptionContainingIgnoreCase(String description);
+
+    List<PostSnapshot> findAllByUserId(UserId userId);
 }
 
 
@@ -49,6 +52,13 @@ class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> findAllByDescriptionContainingIgnoreCase(String description) {
         return repository.findAllByDescriptionContainingIgnoreCase(description).stream()
+                .map(Post::restore)
+                .toList();
+    }
+
+    @Override
+    public List<Post> findAllByUserId(UserId userId) {
+        return repository.findAllByUserId(userId).stream()
                 .map(Post::restore)
                 .toList();
     }

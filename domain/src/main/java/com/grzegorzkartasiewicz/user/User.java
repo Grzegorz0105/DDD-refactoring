@@ -13,8 +13,7 @@ class User {
                 snapshot.getId(),
                 snapshot.getName(),
                 snapshot.getSurname(),
-                snapshot.getAge(),
-                snapshot.getLoginId()
+                snapshot.getAge()
         );
     }
 
@@ -23,8 +22,7 @@ class User {
                 0,
                 source.name(),
                 source.surname(),
-                source.age(),
-                source.loginId()
+                source.age()
         );
     }
 
@@ -35,18 +33,15 @@ class User {
     private String surname;
     private int age;
 
-    private LoginId loginId;
-
-    private User(int id, String name, String surname, int age, LoginId loginId) {
+    private User(int id, String name, String surname, int age) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.loginId = loginId;
     }
 
     UserSnapshot getSnapshot() {
-        return new UserSnapshot(id, name, surname, age, loginId);
+        return new UserSnapshot(id, name, surname, age);
     }
 
     PostCreator prepareNewPost(final String description) {

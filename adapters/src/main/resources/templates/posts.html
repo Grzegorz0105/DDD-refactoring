@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +9,7 @@
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
-<header >
+<header>
     <h1 class="header">
         <form action="#" class="home" method="get" th:action="@{/posts/home}">
             <label>
@@ -35,55 +34,51 @@
         </form>
     </h1>
 </header>
-<!--/*@thymesVar id="user" type="com.grzegorzkartasiewicz.user.User"*/-->
 <dl class="Bd P(10px)">
     <fieldset>
-        <form action="#" method="post" th:action="@{/posts/{userId}(userId=${session.user.id})}">
-            <label >
-
+        <form action="#" method="post" th:action="@{/posts}">
+            <label>
                 <input type="text" placeholder="What do you think?" name="description" />
             </label>
             <button type="submit">Create post >></button>
         </form>
     </fieldset>
 </dl>
-<!--/*@thymesVar id="users" type="java.lang.List<com.grzegorzkartasiewicz.user.User>"*/-->
+<!--/*@thymesVar id="users" type="java.lang.List<com.grzegorzkartasiewicz.user.UserDTO>"*/-->
 <dl th:if="${users != null}" th:each="user : ${users}" class="Bd P(10px)">
-    <a th:href="@{/user(user=${user.id})}">
+    <a th:href="@{/user(id=${user.id})}">
         <dt th:text="|${user.name} ${user.surname}|">...</dt>
     </a>
 </dl>
-<!--/*@thymesVar id="posts" type="java.lang.List<com.grzegorzkartasiewicz.post.Post>"*/-->
+<!--/*@thymesVar id="posts" type="java.lang.List<com.grzegorzkartasiewicz.post.PostDTO>"*/-->
 <dl th:each="post : ${posts}" class="Bd P(10px)">
     <div>
-        <a th:href="@{/user(user=${post.userId.id})}">
-            <span th:text="|${post.userId.name} ${post.userId.surname}|"></span>
+        <a th:href="@{/user(id=${post.userId.id()})}">
+            <span th:text="|${post.authorName} ${post.authorSurname}|"></span>
         </a>
-        <form th:if="${session.user.id == post.userId.id}" class="display" action="#" method="post" th:action="@{/posts/delete/{postId}(postId=${post.id})}">
+        <form th:if="${session.user != null and session.user.id == post.userId.id()}" class="display" action="#" method="post" th:action="@{/posts/delete/{postId}(postId=${post.id})}">
             <input type="hidden">
             <button type="submit">X</button>
         </form>
     </div>
-    <dt th:text="|${post.time}|"></dt>
     <dd class="post-description" th:text="|${post.description}|"></dd>
     <dl>
         <ul>
-            <li th:each="comment : ${post.commentIds}">
+            <li th:each="comment : ${post.comments}">
                 <div>
-                    <a th:href="@{/user(user=${comment.userId.id})}">
-                        <span th:text="|${comment.userId.name} ${comment.userId.surname}|"></span>
+                    <a th:href="@{/user(id=${comment.userId.id()})}">
+                        <span th:text="|${comment.authorName} ${comment.authorSurname}|"></span>
                     </a> <br>
-                    <form th:if="${session.user.id == comment.userId.id}" class="display" action="#" method="post" th:action="@{/posts/comment/delete/{commentId}(commentId=${comment.id})}">
+                    <form th:if="${session.user != null and session.user.id == comment.userId.id()}" class="display" action="#" method="post" th:action="@{/posts/comment/delete/{commentId}(commentId=${comment.id})}">
                         <input type="hidden">
                         <button type="submit">X</button>
                     </form>
                 </div>
-                <span th:text="|${comment.time}|"></span> <br>
                 <span th:text="${comment.description}"></span> <br>
             </li>
         </ul>
         <form action="#" method="post" th:action="@{/posts/comments/{postId}(postId=${post.id})}">
-            <label >
+            <label>
                 <input type="text" placeholder="What do you think?" name="description" />
             </label>
             <button type="submit">Create comment >></button>

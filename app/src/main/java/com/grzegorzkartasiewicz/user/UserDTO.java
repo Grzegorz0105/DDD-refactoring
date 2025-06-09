@@ -12,7 +12,6 @@ public class UserDTO {
     private String name;
     private String surname;
     private int age;
-    private LoginId login;
 
     public int getId() {
         return id;
@@ -46,14 +45,6 @@ public class UserDTO {
         this.age = age;
     }
 
-    public LoginId getLogin() {
-        return login;
-    }
-
-    public void setLogin(LoginId login) {
-        this.login = login;
-    }
-
     static UserDTO toDTO(User user) {
         UserSnapshot userSnapshot = user.getSnapshot();
         UserDTO userDTO = new UserDTO();
@@ -61,7 +52,6 @@ public class UserDTO {
         userDTO.setName(userSnapshot.getName());
         userDTO.setSurname(userSnapshot.getSurname());
         userDTO.setAge(userSnapshot.getAge());
-        userDTO.setLogin(userSnapshot.getLoginId());
         return userDTO;
     }
 }

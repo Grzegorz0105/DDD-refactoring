@@ -11,17 +11,14 @@ class UserSnapshot {
     private String surname;
     private int age;
 
-    private LoginId loginId;
-
     protected UserSnapshot() {
     }
 
-    UserSnapshot(int id, String name, String surname, int age, LoginId loginId) {
+    UserSnapshot(int id, String name, String surname, int age) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;
-        this.loginId = loginId;
     }
 
     public int getId() {
@@ -38,9 +35,5 @@ class UserSnapshot {
 
     public int getAge() {
         return age;
-    }
-
-    public LoginId getLoginId() {
-        return loginId;
     }
 }

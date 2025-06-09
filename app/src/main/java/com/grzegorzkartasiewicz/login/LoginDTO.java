@@ -1,5 +1,6 @@
 package com.grzegorzkartasiewicz.login;
 
+import com.grzegorzkartasiewicz.user.UserDTO;
 import com.grzegorzkartasiewicz.user.vo.UserId;
 
 public class LoginDTO {
@@ -7,12 +8,12 @@ public class LoginDTO {
     private String nick;
     private String password;
     private String email;
-    private UserId user;
+    private UserDTO user = new UserDTO();
 
     public LoginDTO() {
     }
 
-    public LoginDTO(int id, String nick, String password, String email, UserId user) {
+    public LoginDTO(int id, String nick, String password, String email, UserDTO user) {
         this.id = id;
         this.nick = nick;
         this.password = password;
@@ -56,11 +57,12 @@ public class LoginDTO {
         this.email = email;
     }
 
-    public UserId getUser() {
+
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(UserId user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 }

@@ -1,6 +1,7 @@
 package com.grzegorzkartasiewicz.comment;
 
 import com.grzegorzkartasiewicz.post.vo.PostId;
+import com.grzegorzkartasiewicz.user.UserDTO;
 import com.grzegorzkartasiewicz.user.vo.UserId;
 
 public class CommentDTO {
@@ -11,12 +12,17 @@ public class CommentDTO {
     private PostId postId;
 
     private UserId userId;
+    private String authorName;
+    private String authorSurname;
 
-    public CommentDTO(int id, String description, PostId postId, UserId userId) {
+    public CommentDTO(int id, String description, PostId postId, UserId userId, String authorName,
+                      String authorSurname) {
         this.id = id;
         this.description = description;
         this.postId = postId;
         this.userId = userId;
+        this.authorName = authorName;
+        this.authorSurname = authorSurname;
     }
 
     public int getId() {
@@ -51,9 +57,14 @@ public class CommentDTO {
         this.userId = userId;
     }
 
-    static CommentDTO toDTO(Comment comment) {
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
+    public String getAuthorSurname() { return authorSurname; }
+    public void setAuthorSurname(String authorSurname) { this.authorSurname = authorSurname; }
+
+    static CommentDTO toDTO(Comment comment, UserDTO user) {
         CommentSnapshot commentSnapshot = comment.getSnapshot();
         return new CommentDTO(commentSnapshot.getId(), commentSnapshot.getDescription(), commentSnapshot.getPostId(),
-                commentSnapshot.getUserId());
+                commentSnapshot.getUserId(), user.getName(), user.getSurname());
     }
 }

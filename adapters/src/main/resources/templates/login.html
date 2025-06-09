@@ -2,25 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook-Clone</title>
     <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
     <link rel="stylesheet" th:href="@{/style.css}">
 </head>
 <body>
 <h1>Facebook-Clone</h1>
-<!--/*@thymesVar id="message" type="java.lang.String"*/-->
 <h1 th:if="${message != null}" th:text="${message}"></h1>
 <fieldset>
     <legend>Log in</legend>
-    <form action="#" method="post" th:action="@{/static}">
-
-        <label >
-            login: 
-            <input type="text" name="login" />
+    <form action="#" method="post" th:action="@{/login}">
+        <label>
+            login:
+            <input type="text" name="username" />
         </label>
-        <label >
-            password: 
+        <label>
+            password:
             <input type="password" name="password" />
         </label>
         <div>
@@ -30,35 +27,34 @@
 </fieldset>
 <fieldset>
     <legend>Sign up</legend>
-    <!--/*@thymesVar id="login" type="com.grzegorzkartasiewicz.login.Login"*/-->
-    <form action="#" method="post" th:action="@{/sign}" th:object="${login}">
+    <form action="#" method="post" th:action="@{/register}" th:object="${login}">
         <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
-        <label >
-            login: 
+        <label>
+            login:
             <input type="text" th:field="*{nick}" />
         </label>
-        <label >
-            password: 
-            <input type="text" th:field="*{password}" />
+        <label>
+            password:
+            <input type="password" th:field="*{password}" />
         </label>
-        <label >
-            email: 
+        <label>
+            email:
             <input type="text" th:field="*{email}" />
         </label>
-        <label >
-            name: 
+        <label>
+            name:
             <input type="text" th:field="*{user.name}" />
         </label>
-        <label >
-            surname: 
+        <label>
+            surname:
             <input type="text" th:field="*{user.surname}" />
         </label>
-        <label >
-            age: 
+        <label>
+            age:
             <input type="number" th:field="*{user.age}" />
         </label>
         <div>
-            <button type="submit">Sign in</button>
+            <button type="submit">Sign up</button>
         </div>
     </form>
 </fieldset>

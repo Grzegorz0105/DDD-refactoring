@@ -2,12 +2,13 @@ package com.grzegorzkartasiewicz.user;
 
 
 import com.grzegorzkartasiewicz.comment.vo.CommentId;
+import com.grzegorzkartasiewicz.post.PostFacade;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -15,33 +16,28 @@ import java.util.List;
 class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     public static final String MODEL_ATTRIBUTE_USER = "user";
-    private final UserRepository repository;
-    private final UserFacade service;
+    private final UserFacade userFacade;
+    private final PostFacade postFacade;
 
-    UserController(UserRepository repository, UserFacade service) {
-        this.repository = repository;
-        this.service = service;
+    UserController(UserFacade userFacade, PostFacade postFacade) {
+        this.userFacade = userFacade;
+        this.postFacade = postFacade;
     }
 
 
     @GetMapping
-    String showUser(Model model, @RequestParam int user){
-        logger.info("Showing chosen user!");
-        var userToShow = repository.findById(user);
-        if(userToShow.isPresent()){
-            model.addAttribute(MODEL_ATTRIBUTE_USER,userToShow.get());
-        } else{
-            model.addAttribute("message","User not found");
-        }
-        return MODEL_ATTRIBUTE_USER;
-
+    public String showUserProfile(@RequestParam("id") int userId, Model model) {
+        model.addAttribute("userProfile", userFacade.getUser(new com.grzegorzkartasiewicz.user.vo.UserId(userId)));
+        // Używamy nowej metody fasady do pobrania "bogatych" DTO
+        model.addAttribute("postsForUser", postFacade.getPostsForUser(userId));
+        return "user";
     }
     @PostMapping
     String addUserPost(HttpSession session, Model model,
-                        String description){
+                       String description){
         logger.info("Creating new post!");
         var loggedUser = (UserDTO) session.getAttribute(MODEL_ATTRIBUTE_USER);
-        service.createPost(loggedUser.getId(),description);
+        userFacade.createPost(loggedUser.getId(),description);
         model.addAttribute(MODEL_ATTRIBUTE_USER, loggedUser);
         return MODEL_ATTRIBUTE_USER;
     }
@@ -52,7 +48,7 @@ class UserController {
                           String description){
         logger.info("Creating new comment!");
         var loggedUser= (UserDTO) session.getAttribute(MODEL_ATTRIBUTE_USER);
-        service.createComment(loggedUser,postId,description);
+        userFacade.createComment(loggedUser,postId,description);
         model.addAttribute(MODEL_ATTRIBUTE_USER, current);
         return MODEL_ATTRIBUTE_USER;
     }
@@ -61,7 +57,7 @@ class UserController {
     String deleteUserPost(@ModelAttribute("users") UserDTO current, Model model,
                           @PathVariable int postId){
         logger.info("Deleting post!");
-        service.deletePost(postId);
+        userFacade.deletePost(postId);
         model.addAttribute(MODEL_ATTRIBUTE_USER, current);
         return MODEL_ATTRIBUTE_USER;
     }
@@ -70,20 +66,16 @@ class UserController {
     String deleteUserComment(@ModelAttribute("users") UserDTO current, Model model,
                           @PathVariable int commentId){
         logger.info("Deleting comment!");
-        service.deleteComment(new CommentId(commentId));
+        userFacade.deleteComment(new CommentId(commentId));
         model.addAttribute(MODEL_ATTRIBUTE_USER, current);
         return MODEL_ATTRIBUTE_USER;
     }
     @GetMapping("/home")
-    String showUserProfile(@ModelAttribute("users") UserDTO current,Model model){
-        logger.info("Showing profile of logged user!");
-        model.addAttribute(MODEL_ATTRIBUTE_USER,current);
-        return MODEL_ATTRIBUTE_USER;
-
-    }
-
-    @ModelAttribute("users")
-    List<UserDTO> getUsers(){
-        return repository.findAll().stream().map(UserDTO::toDTO).toList();
+    public String showCurrentUserProfile(HttpSession session) {
+        UserDTO loggedUser = (UserDTO) session.getAttribute("user");
+        if (loggedUser != null) {
+            return "redirect:/user?id=" + loggedUser.getId();
+        }
+        return "redirect:/";
     }
 }
