@@ -26,22 +26,47 @@ class PostControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private PostRepository postRepository;
-
-    @MockBean
     private PostFacade postFacade;
 
     @MockBean
     private UserFacade userFacade;
+
+    @MockBean
+    private PostRepository postRepository;
+
+    @Test
+    @DisplayName("should return home page with all posts")
+    void shouldReturnHomePageWithAllPosts() throws Exception {
+        // given
+        PostDTO postDto = new PostDTO();
+        postDto.setId(1);
+        postDto.setDescription("A sample post");
+        postDto.setUserId(new UserId(1));
+        postDto.setAuthorName("Test");
+        postDto.setAuthorSurname("User");
+        postDto.setComments(Collections.emptyList());
+
+        given(postFacade.getAllPostsForHomePage()).willReturn(List.of(postDto));
+
+        // when & then
+        mockMvc.perform(get("/posts/home"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("posts"))
+                .andExpect(model().attribute("posts", List.of(postDto)))
+                .andExpect(model().attributeDoesNotExist("post"));
+    }
 
     @Test
     @DisplayName("should return posts and users for a given search query")
     void shouldReturnPostsAndUsersForSearchQuery() throws Exception {
         // given
         String query = "test";
-        var postDto = new PostDTO(1, "A test post", new UserId(1), "name", "surname", List.of(new CommentDTO(1,
-                "decription", new PostId(1), new UserId(1), "name", "surname")));
-        var userDto = new UserDTO();
+        PostDTO postDto = new PostDTO();
+        postDto.setId(1);
+        postDto.setDescription("This is a test post.");
+        postDto.setUserId(new UserId(2));
+
+        UserDTO userDto = new UserDTO();
         userDto.setId(2);
         userDto.setName("Test User");
 
@@ -54,22 +79,5 @@ class PostControllerTest {
                 .andExpect(view().name("posts"))
                 .andExpect(model().attribute("posts", List.of(postDto)))
                 .andExpect(model().attribute("users", List.of(userDto)));
-    }
-
-    @Test
-    @DisplayName("should return home page with all posts")
-    void shouldReturnHomePageWithAllPosts() throws Exception {
-        // given
-        var postDto = new PostDTO(1, "A test post", new UserId(1), "name", "surname", List.of(new CommentDTO(1,
-                "decription", new PostId(1), new UserId(1), "name", "surname")));
-        given(postRepository.findAll()).willReturn(Collections.singletonList(Post.restore(new PostSnapshot(1, "A sample post", new UserId(1)))));
-
-
-        // when & then
-        mockMvc.perform(get("/posts/home"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("posts"))
-                .andExpect(model().attributeExists("posts"))
-                .andExpect(model().attributeExists("post"));
     }
 }

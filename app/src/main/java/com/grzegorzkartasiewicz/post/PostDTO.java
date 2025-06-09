@@ -11,7 +11,7 @@ public class PostDTO {
 
     private String description;
 
-    private UserId user;
+    private UserId userId;
     private String authorName;
     private String authorSurname;
     private List<CommentDTO> comments;
@@ -19,10 +19,10 @@ public class PostDTO {
     public PostDTO() {
     }
 
-    public PostDTO(int id, String description, UserId user, String authorName, String authorSurname, List<CommentDTO> comments) {
+    public PostDTO(int id, String description, UserId userId, String authorName, String authorSurname, List<CommentDTO> comments) {
         this.id = id;
         this.description = description;
-        this.user = user;
+        this.userId = userId;
         this.authorName = authorName;
         this.authorSurname = authorSurname;
         this.comments = comments;
@@ -44,12 +44,12 @@ public class PostDTO {
         this.description = description;
     }
 
-    public UserId getUser() {
-        return user;
+    public UserId getUserId() {
+        return userId;
     }
 
-    public void setUser(UserId user) {
-        this.user = user;
+    public void setUserId(UserId userId) {
+        this.userId = userId;
     }
 
     public String getAuthorName() { return authorName; }

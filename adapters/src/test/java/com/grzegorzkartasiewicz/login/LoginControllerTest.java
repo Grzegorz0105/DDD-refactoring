@@ -17,8 +17,10 @@ class LoginControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
     private LoginFacade loginFacade;
+
     @MockBean
     private LoginRepository loginRepository;
 
@@ -37,11 +39,11 @@ class LoginControllerTest {
         given(loginFacade.logInUser(username, password)).willReturn(loggedUserDto);
 
         // when & then
-        mockMvc.perform(post("/")
-                        .param("login", username)
+        mockMvc.perform(post("/login")
+                        .param("username", username)
                         .param("password", password))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/posts/"))
+                .andExpect(redirectedUrl("/posts/home"))
                 .andExpect(request().sessionAttribute("user", loggedUserDto));
     }
 
@@ -54,8 +56,8 @@ class LoginControllerTest {
         given(loginFacade.logInUser(username, password)).willReturn(null);
 
         // when & then
-        mockMvc.perform(post("/")
-                        .param("login", username)
+        mockMvc.perform(post("/login")
+                        .param("username", username)
                         .param("password", password))
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"))

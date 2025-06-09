@@ -32,15 +32,17 @@ class UserController {
         model.addAttribute("postsForUser", postFacade.getPostsForUser(userId));
         return "user";
     }
-    @PostMapping
-    String addUserPost(HttpSession session, Model model,
-                       String description){
+    @PostMapping("/posts")
+    String addUserPost(HttpSession session, String description){
         logger.info("Creating new post!");
-        var loggedUser = (UserDTO) session.getAttribute(MODEL_ATTRIBUTE_USER);
-        userFacade.createPost(loggedUser.getId(),description);
-        model.addAttribute(MODEL_ATTRIBUTE_USER, loggedUser);
-        return MODEL_ATTRIBUTE_USER;
+        var loggedUser = (UserDTO) session.getAttribute("user");
+        if (loggedUser != null) {
+            userFacade.createPost(loggedUser.getId(), description);
+            return "redirect:/user?id=" + loggedUser.getId();
+        }
+        return "redirect:/";
     }
+
     @PostMapping("/comments/{postId}")
     String addUserComment(HttpSession session,
             @ModelAttribute("users") UserDTO current, Model model,
